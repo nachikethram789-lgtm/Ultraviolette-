@@ -1,1 +1,288 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d10">
+<title>UV Cockpit — F77 Mach 2</title>
+
+<style>
+:root {
+  --bg:#0b0d10;
+  --panel:#15191f;
+  --line:#2b313b;
+  --text:#f3f5f7;
+  --muted:#929ba8;
+  --green:#c5ff3d;
+  --blue:#70b9ff;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,Arial,sans-serif;
+}
+.app {max-width:1200px;margin:auto;padding:20px}
+header {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding-bottom:20px;border-bottom:1px solid var(--line)
+}
+.brand {display:flex;align-items:center;gap:12px}
+.logo {
+  display:grid;place-items:center;width:44px;height:44px;
+  border:2px solid var(--green);border-radius:12px;
+  color:var(--green);font-weight:900;font-size:20px
+}
+h1 {font-size:19px;margin:0;letter-spacing:1px}
+.sub,.muted {color:var(--muted);font-size:12px;margin-top:5px}
+.status {
+  color:var(--green);border:1px solid #52652b;border-radius:8px;
+  padding:8px 10px;font-size:11px;font-weight:bold
+}
+.notice {
+  margin:18px 0;padding:12px;border:1px solid var(--line);
+  border-radius:10px;color:var(--muted);font-size:12px;line-height:1.6
+}
+.section {
+  margin:25px 0 12px;color:var(--muted);
+  font-size:11px;letter-spacing:2px;font-weight:bold
+}
+.grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card {
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:15px;padding:18px;min-width:0
+}
+.label {font-size:12px;color:var(--muted);margin-bottom:12px}
+.value {font-size:clamp(27px,4vw,42px);font-weight:750}
+.unit {font-size:12px;color:var(--muted);font-weight:normal}
+.green {color:var(--green)}
+.blue {color:var(--blue)}
+.two {display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+input,button {font:inherit}
+input {
+  min-width:0;width:100%;padding:12px;background:var(--bg);
+  color:var(--text);border:1px solid var(--line);border-radius:9px
+}
+button {
+  border:0;border-radius:9px;padding:12px;
+  background:var(--green);color:#111;font-weight:bold;cursor:pointer
+}
+.secondary {
+  background:#222832;color:var(--text);border:1px solid var(--line)
+}
+.search {display:flex;gap:8px;margin-top:16px}
+.map {
+  margin-top:15px;height:150px;border:1px solid var(--line);
+  border-radius:12px;display:grid;place-items:center;text-align:center;
+  background:repeating-linear-gradient(35deg,#171c23,#171c23 30px,#1c232c 31px,#1c232c 33px);
+  color:var(--muted);font-size:13px;padding:15px
+}
+.actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.row {
+  display:flex;justify-content:space-between;gap:10px;
+  padding:15px 0;border-bottom:1px solid var(--line);font-size:13px
+}
+.row:last-child {border-bottom:0}
+.row span {color:var(--muted)}
+footer {
+  padding:28px 0;text-align:center;color:var(--muted);
+  font-size:11px;line-height:1.7
+}
+@media(max-width:750px) {
+  .grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two {grid-template-columns:1fr}
+}
+@media(max-width:420px) {
+  .app {padding:13px}
+  .card {padding:14px}
+  .search {flex-direction:column}
+  .search button {width:100%}
+  .status {font-size:9px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="logo">UV</div>
+    <div>
+      <h1>UV COCKPIT</h1>
+      <div class="sub">F77 MACH 2 · PERSONAL DASHBOARD</div>
+    </div>
+  </div>
+  <div class="status">● DEMO MODE</div>
+</header>
+
+<div class="notice">
+  <strong>PROTOTYPE:</strong> This dashboard is not connected to your bike.
+  Live speed, battery, range and odometer readings are unavailable.
+  Bluetooth and vehicle controls are not implemented.
+</div>
+
+<div class="section">VEHICLE OVERVIEW</div>
+<div class="grid">
+  <div class="card">
+    <div class="label">SPEED</div>
+    <div class="value">-- <span class="unit">km/h</span></div>
+    <div class="muted">Waiting for vehicle data</div>
+  </div>
+  <div class="card">
+    <div class="label">BATTERY</div>
+    <div class="value green">-- <span class="unit">%</span></div>
+    <div class="muted">Charge level unavailable</div>
+  </div>
+  <div class="card">
+    <div class="label">ESTIMATED RANGE</div>
+    <div class="value">-- <span class="unit">km</span></div>
+    <div class="muted">Awaiting verified data</div>
+  </div>
+  <div class="card">
+    <div class="label">ODOMETER</div>
+    <div class="value">-- <span class="unit">km</span></div>
+    <div class="muted">Bike reading unavailable</div>
+  </div>
+</div>
+
+<div class="section">NAVIGATION</div>
+<div class="two">
+  <div class="card">
+    <div class="label">DESTINATION SEARCH</div>
+    <div style="font-size:22px;font-weight:bold">Where to?</div>
+    <div class="muted">Search for a place on OpenStreetMap.</div>
+
+    <form id="searchForm" class="search">
+      <input id="destination" placeholder="Enter destination..." required>
+      <button type="submit">SEARCH ↗</button>
+    </form>
+
+    <div class="map" id="mapMessage">
+      <div>⌖<br>Search for a destination to open the map</div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary" id="openMap">OPEN MAP ↗</button>
+      <button class="secondary" id="locationBtn">MY LOCATION</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">RIDE INFORMATION</div>
+    <div class="row"><span>Current ride</span><b>-- km</b></div>
+    <div class="row"><span>Ride duration</span><b>--:--</b></div>
+    <div class="row"><span>Average speed</span><b>-- km/h</b></div>
+    <div class="row"><span>Motor temperature</span><b>-- °C</b></div>
+    <div class="row"><span>Bike connection</span><b>Offline</b></div>
+  </div>
+</div>
+
+<div class="section">CHARGING & DIAGNOSTICS</div>
+<div class="grid">
+  <div class="card">
+    <div class="label">CHARGING STATUS</div>
+    <div style="font-size:20px;font-weight:bold">Unavailable</div>
+    <div class="muted">No charger connection</div>
+  </div>
+  <div class="card">
+    <div class="label">CHARGING POWER</div>
+    <div class="value">-- <span class="unit">kW</span></div>
+    <div class="muted">Live data unavailable</div>
+  </div>
+  <div class="card">
+    <div class="label">DIAGNOSTICS</div>
+    <div style="font-size:20px;font-weight:bold">Not checked</div>
+    <div class="muted">No diagnostic interface</div>
+  </div>
+  <div class="card">
+    <div class="label">DATA SOURCE</div>
+    <div class="value blue" style="font-size:24px">OFFLINE</div>
+    <div class="muted">No UV cloud connection</div>
+  </div>
+</div>
+
+<div class="section">QUICK LINKS</div>
+<div class="card actions">
+  <button class="secondary" id="uvLink">UV WEBSITE ↗</button>
+  <button class="secondary" id="osmLink">OPENSTREETMAP ↗</button>
+  <button class="secondary" id="fullScreen">FULLSCREEN ⛶</button>
+</div>
+
+<footer>
+  UV COCKPIT · INDEPENDENT EXPERIMENTAL PROJECT<br>
+  Not an official Ultraviolette product. No ECU/VCU connection.
+  <br>Do not interact with this dashboard while riding.
+</footer>
+</div>
+
+<script>
+"use strict";
+
+let mapUrl = "https://www.openstreetmap.org/";
+
+document.getElementById("searchForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const query = document.getElementById("destination").value.trim();
+  if (!query) return;
+
+  mapUrl = "https://www.openstreetmap.org/search?query=" +
+    encodeURIComponent(query);
+
+  window.open(mapUrl, "_blank", "noopener,noreferrer");
+});
+
+document.getElementById("openMap").addEventListener("click", function() {
+  window.open(mapUrl, "_blank", "noopener,noreferrer");
+});
+
+document.getElementById("osmLink").addEventListener("click", function() {
+  window.open("https://www.openstreetmap.org/", "_blank", "noopener,noreferrer");
+});
+
+document.getElementById("uvLink").addEventListener("click", function() {
+  window.open("https://www.ultraviolette.com/", "_blank", "noopener,noreferrer");
+});
+
+document.getElementById("locationBtn").addEventListener("click", function() {
+  const message = document.getElementById("mapMessage");
+
+  if (!navigator.geolocation) {
+    message.textContent = "Location is not supported by this browser.";
+    return;
+  }
+
+  message.textContent = "Requesting location permission…";
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    mapUrl = "https://www.openstreetmap.org/?mlat=" + lat +
+      "&mlon=" + lon + "#map=16/" + lat + "/" + lon;
+
+    window.open(mapUrl, "_blank", "noopener,noreferrer");
+    message.textContent = "Location found. Map opened.";
+  }, function() {
+    message.textContent = "Location unavailable. Check browser permission.";
+  }, {enableHighAccuracy:true, timeout:10000});
+});
+
+document.getElementById("fullScreen").addEventListener("click", async function() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    } else {
+      await document.exitFullscreen();
+    }
+  } catch (e) {
+    document.getElementById("mapMessage").textContent =
+      "Fullscreen is unavailable in this browser.";
+  }
+});
+</script>
+</body>
+</html>
